@@ -3,6 +3,16 @@
   <EntityContainer Name="DBSYS32Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Role" EntityType="DBSYS32Model.Role" />
     <EntitySet Name="User" EntityType="DBSYS32Model.User" />
+    <EntitySet Name="UserRole" EntityType="DBSYS32Model.UserRole" />
+    <EntitySet Name="vw_UserRole" EntityType="DBSYS32Model.vw_UserRole" />
+    <AssociationSet Name="FK_UserRole_Role" Association="DBSYS32Model.FK_UserRole_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="UserRole" EntitySet="UserRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserRole_User" Association="DBSYS32Model.FK_UserRole_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserRole" EntitySet="UserRole" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Role">
     <Key>
@@ -10,6 +20,7 @@
     </Key>
     <Property Name="roleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="roleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserRole" Relationship="DBSYS32Model.FK_UserRole_Role" FromRole="Role" ToRole="UserRole" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -18,5 +29,48 @@
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserRole" Relationship="DBSYS32Model.FK_UserRole_User" FromRole="User" ToRole="UserRole" />
   </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="userId" Type="Int32" />
+    <Property Name="roleId" Type="Int32" />
+    <NavigationProperty Name="Role" Relationship="DBSYS32Model.FK_UserRole_Role" FromRole="UserRole" ToRole="Role" />
+    <NavigationProperty Name="User" Relationship="DBSYS32Model.FK_UserRole_User" FromRole="UserRole" ToRole="User" />
+  </EntityType>
+  <EntityType Name="vw_UserRole">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="roleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_UserRole_Role">
+    <End Type="DBSYS32Model.Role" Role="Role" Multiplicity="0..1" />
+    <End Type="DBSYS32Model.UserRole" Role="UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="roleId" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="roleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserRole_User">
+    <End Type="DBSYS32Model.User" Role="User" Multiplicity="0..1" />
+    <End Type="DBSYS32Model.UserRole" Role="UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

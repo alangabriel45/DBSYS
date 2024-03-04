@@ -192,6 +192,12 @@
     <Compile Include="User.cs">
       <DependentUpon>ModelCRUD.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserRole.cs">
+      <DependentUpon>ModelCRUD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vw_UserRole.cs">
+      <DependentUpon>ModelCRUD.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

@@ -6,9 +6,13 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
+
 @if (!String.IsNullOrEmpty(TempData["Msg"] as String))
 {
     <div call="alert alert-success">@TempData["Msg"]</div>
@@ -19,9 +23,13 @@
         <th>
            Username
         </th>
-        <th>
-            Action
-        </th>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <th>
+                Action
+            </th>
+        }
+        
     </tr>
     @{ int i = 1;}
 @foreach (var item in Model) {
@@ -30,11 +38,20 @@
         <td>
             @Html.DisplayFor(modelItem => item.username)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <td>
+                
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @if (User.IsInRole("Manager"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) 
+                    <span>|</span>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                }
+                
+            </td>
+        }
     </tr>
     i++;
 }

@@ -21,6 +21,20 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    { 
+                        if (User.IsInRole("Manager"))
+                        {
+                            <li><a href="~/Home/Create">Create</a></li>
+                            <li><a href="~/Home/">Admin Home</a></li>
+                        }
+                        <li><a href="#">@User.Identity.Name</a></li>
+                        <li><a href="~/Home/Logout">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="~/Home/Login">Login</a></li>
+                    }
                 </ul>
             </div>
         </div>

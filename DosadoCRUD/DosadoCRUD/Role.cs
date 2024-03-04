@@ -14,7 +14,14 @@ namespace DosadoCRUD
     
     public partial class Role
     {
+        public Role()
+        {
+            this.UserRole = new HashSet<UserRole>();
+        }
+    
         public int roleId { get; set; }
         public string roleName { get; set; }
+    
+        public virtual ICollection<UserRole> UserRole { get; set; }
     }
 }
